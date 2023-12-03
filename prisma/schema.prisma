@@ -10,44 +10,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+enum Role {
+  SUPERVISOR
+  STUDENT
+}
+
+model Student {
   id             String    @id @default(uuid())
   name           String?
   image          String?
   email          String?   @unique
+  role           Role?     @default(STUDENT)
   emailVerified  DateTime?
   hashedPassword String?
   plate          Int?
   created_at     DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   sessions       Session[]
-  accounts       Account[]
 }
 
-model Account {
-  id                String  @id @default(uuid())
-  userId            String
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-
-  @@unique([provider, providerAccountId])
+model Supervisor {
+  id             String    @id @default(uuid())
+  name           String?
+  image          String?
+  email          String?   @unique
+  role           Role?     @default(SUPERVISOR)
+  emailVerified  DateTime?
+  hashedPassword String?
+  plate          Int?
+  created_at     DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  sessions       Session[]
 }
 
 model Session {
-  id           String   @id @default(uuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sessionToken String   @unique
+  id           String      @id @default(uuid())
+  studentId    String
+  student      Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  sessionToken String      @unique
   expires      DateTime
+  Supervisor   Supervisor? @relation(fields: [supervisorId], references: [id])
+  supervisorId String?
 }
 
 model VerificationToken {
