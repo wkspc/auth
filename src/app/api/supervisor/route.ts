@@ -32,9 +32,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
       message: "Supervisor cadastardo com sucesso!",
       data: supervisor,
     });
-  } catch (err) {
-    console.log(err);
-    return { status: 400 };
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ status: 400, message: error });
   }
 }
 
@@ -47,7 +47,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     });
     return NextResponse.json({ status: 200, data: supervisor });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ status: 400 });
+    return NextResponse.json({ status: 400, message: error });
   }
 }

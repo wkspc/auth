@@ -32,9 +32,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
       message: "Estudante cadastardo com sucesso!",
       data: student,
     });
-  } catch (err) {
-    console.log(err);
-    return { status: 400 };
+  } catch (error) {
+    return NextResponse.json({ status: 400, message: error });
   }
 }
 
