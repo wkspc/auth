@@ -1,7 +1,11 @@
+import { getServerSession } from "next-auth";
+import { authConfig } from "./api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+
 export default async function Home() {
-  return (
-    <main className="py-20">
-      <div className="container">Hello World</div>
-    </main>
-  );
+  const session = await getServerSession(authConfig);
+  if (!session) {
+    redirect("/auth");
+  }
+  return <main></main>;
 }
