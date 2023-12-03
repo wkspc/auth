@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Ubuntu } from "next/font/google";
-import { authConfig } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/config/authOptions";
 import { SessionProvider } from "@/components/SessionProvider";
 import { UserStorage } from "@/context/AuthContext";
 import { Toaster } from "sonner";
@@ -22,7 +22,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authConfig);
+  const session = await getServerSession(authOptions);
   return (
     <html lang="pt-BR">
       <body className={ubuntu.className}>
